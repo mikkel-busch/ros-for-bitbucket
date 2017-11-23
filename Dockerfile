@@ -17,3 +17,24 @@ RUN apt-get install python-rosinstall -y
 RUN rosdep init
 
 RUN rosdep update
+
+RUN apt-get install wget
+
+RUN wget https://netix.dl.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.49.tar.gz
+
+RUN tar xfpz GeographicLib-1.49.tar.gz
+
+WORKDIR GeographicLib-1.49
+
+RUN mkdir BUILD
+
+WORKDIR BUILD
+
+RUN cmake ..
+
+RUN make -j$(nproc)
+
+RUN make test
+
+RUN make install
+
