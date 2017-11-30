@@ -28,7 +28,7 @@ RUN  wget http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz && t
 
 WORKDIR /app
 
-RUN git clone https://github.com/dji-sdk/Onboard-SDK.git dji-sdk && cd dji-sdk && git checkout 3.3 && mkdir build && cd build && cmake .. && make djiosdk-core && make install djiosdk-core
+RUN git clone https://github.com/dji-sdk/Onboard-SDK.git dji-sdk && cd dji-sdk && git checkout 3.3.2 && mkdir build && cd build && cmake .. && make djiosdk-core && make install djiosdk-core
 
 # mosquitto
 
