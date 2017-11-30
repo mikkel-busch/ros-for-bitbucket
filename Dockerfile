@@ -40,4 +40,4 @@ RUN tar -xvzf thrift-0.10.0.tar.gz
 
 WORKDIR /app/thrift-0.10.0
 
-RUN ./configure --without-java --without-qt4 --without-qt5 && make && make install
+RUN ./configure --without-java --without-qt4 --without-qt5 && make && make install && thrift --version
