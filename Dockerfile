@@ -14,30 +14,24 @@ RUN apt-get install ros-kinetic-desktop-full python-rosinstall wget automake bis
 
 RUN rosdep init
 
-RUN wget https://netix.dl.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.49.tar.gz
+#  GeographicLib
 
-RUN tar xfpz GeographicLib-1.49.tar.gz
+RUN wget https://netix.dl.sourceforge.net/project/geographiclib/distrib/GeographicLib-1.49.tar.gz && tar xfpz GeographicLib-1.49.tar.gz && cd GeographicLib-1.49 && mkdir BUILD && cd BUILD &&  cmake .. &&  make -j$(nproc) &&  make test &&  make install
 
-WORKDIR /app/GeographicLib-1.49
-
-RUN mkdir BUILD
-
-WORKDIR BUILD
-
-RUN cmake ..
-
-RUN make -j$(nproc)
-
-RUN make test
-
-RUN make install
+#  thrift
 
 WORKDIR /app
 
-RUN  wget http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz
+RUN  wget http://archive.apache.org/dist/thrift/0.10.0/thrift-0.10.0.tar.gz && tar -xvzf thrift-0.10.0.tar.gz && cd thrift-0.10.0 && ./configure --without-java --without-qt4 --without-qt5 && make && make install && ldconfig
 
-RUN tar -xvzf thrift-0.10.0.tar.gz
+# dji sdk
 
-WORKDIR /app/thrift-0.10.0
+WORKDIR /app
 
-RUN ./configure --without-java --without-qt4 --without-qt5 && make && make install
+RUN git clone https://github.com/dji-sdk/Onboard-SDK.git dji-sdk && cd dji-sdk && git checkout 3.3 && mkdir build && cd build && cmake .. && make djiosdk-core && make install djiosdk-core
+
+# mosquitto
+
+WORKDIR /app
+
+RUN  wget http://mosquitto.org/files/source/mosquitto-1.4.14.tar.gz && tar -xvzf mosquitto-1.4.14.tar.gz && cd mosquitto-1.4.14 && mkdir build && cd build && cmake .. && make && make install
